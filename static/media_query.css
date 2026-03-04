@@ -1,0 +1,264 @@
+/* ============================================================
+   1. RESET GLOBAL & CURSOR MÁGICO (RESOLVE BUG DA BOLINHA AZUL)
+   ============================================================ */
+
+/* Desativa o cursor em dispositivos touch e telas menores para não travar no canto */
+@media (pointer: coarse), (max-width: 1024px) {
+    #magic-cursor, 
+    .cursor-follower,
+    #magic-cursor[style] { 
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+}
+
+/* ============================================================
+   2. RESPONSIVIDADE NAVEGAÇÃO & ESTRUTURA (INDEX)
+   ============================================================ */
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+    }
+    nav ul {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    nav a {
+        font-size: 0.8rem;
+    }
+    .brand-logo {
+        font-size: 1.2rem !important;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    .hero-section {
+        padding: 40px 0 30px;
+    }
+    .glass-panel {
+        padding: 25px 15px;
+        border-radius: 20px;
+    }
+    .modern-form .input-group {
+        flex-direction: column;
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+    .modern-form input {
+        background: rgba(0, 0, 0, 0.4);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid var(--glass-border);
+        margin-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .modern-form button {
+        width: 100%;
+        border-radius: 10px;
+    }
+}
+
+/* ============================================================
+   3. CATEGORY & SAVES (GRID DE PRODUTOS)
+   ============================================================ */
+
+@media (max-width: 992px) {
+    .deals-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .category-header h2 {
+        font-size: 2.5rem;
+        letter-spacing: -1px;
+    }
+    
+    .category-header h2[data-text="Watchlist"] {
+        font-size: 2.8rem;
+    }
+
+    .typing-effect {
+        white-space: normal; 
+        font-size: 0.65rem;
+        text-align: center;
+        max-width: 90%;
+    }
+
+    .main-content {
+        padding: 0 10px;
+    }
+
+    #modal-chart {
+        width: 95%;
+    }
+
+    .chart-box {
+        height: 250px;
+    }
+}
+
+@media (max-width: 580px) {
+    .deals-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .deal-card {
+        padding: 15px;
+        border-radius: 20px;
+    }
+
+    .img-container {
+        height: 160px;
+        margin-bottom: 15px;
+    }
+
+    .price {
+        font-size: 1.5rem;
+    }
+
+    .btn-group {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .btn-chart, .btn-buy {
+        padding: 10px 5px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Evita que o efeito Glitch crie barra lateral */
+.category-header {
+    overflow: hidden;
+    width: 100%;
+}
+
+/* ============================================================
+   4. CORREÇÃO SAVES.HTML (TABELA PROTOCOLO MOBILE)
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .saves-container {
+        padding: 20px 10px;
+    }
+
+    .watchlist-table, 
+    .watchlist-table thead, 
+    .watchlist-table tbody, 
+    .watchlist-table th, 
+    .watchlist-table td, 
+    .watchlist-table tr { 
+        display: block; 
+        width: 100%;
+    }
+
+    .watchlist-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .watchlist-table tr {
+        margin-bottom: 15px;
+        border: 1px solid var(--glass-border) !important;
+        border-radius: 15px !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        padding: 10px;
+        transform: none !important;
+    }
+
+    .watchlist-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 10px !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        text-align: right !important;
+    }
+
+    .watchlist-table td:last-child {
+        border-bottom: none !important;
+    }
+
+    /* Rótulos automáticos para a tabela mobile */
+    .watchlist-table td:nth-of-type(1)::before { content: "STATUS"; }
+    .watchlist-table td:nth-of-type(2)::before { content: "DESTINATÁRIO"; }
+    .watchlist-table td:nth-of-type(3)::before { content: "PREÇO ALVO"; }
+    .watchlist-table td:nth-of-type(4)::before { content: "AÇÃO"; }
+
+    .watchlist-table td::before {
+        font-size: 0.65rem;
+        color: var(--primary);
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-align: left;
+    }
+}
+
+/* ============================================================
+   5. AUTH.HTML & SIGNUP.HTML (LOGIN/REGISTRO)
+   ============================================================ */
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 30px 20px;
+        width: 92%;
+        max-width: none;
+        clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
+        margin: 0 auto;
+    }
+
+    .auth-container {
+        padding: 20px;
+    }
+
+    .auth-card h2 {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+    }
+
+    .auth-card input, .btn-register, .btn-buy {
+        padding: 14px !important;
+        font-size: 0.9rem;
+    }
+
+    .scan-line {
+        opacity: 0.5;
+    }
+}
+
+/* Garante que o fundo animado não interfira no clique */
+.cyber-bg {
+    pointer-events: none;
+}
+
+
+
+
+
+/*
+==== ERRO NO LOG DO GOOGLE ====
+
+The selector "#user-email" on hx-include returned no matches!
+b	@	htmx.org@1.9.10:1
+pe	@	htmx.org@1.9.10:1
+dr	@	htmx.org@1.9.10:1
+he	@	htmx.org@1.9.10:1
+(anonymous)	@	htmx.org@1.9.10:1
+i	@	htmx.org@1.9.10:1
+
+*/

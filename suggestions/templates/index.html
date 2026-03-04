@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LuxWatch - AI Deals</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="/static/style.css" />
+    <link rel="stylesheet" href="/static/media_query.css">
+  </head>
+  <body>
+    <div id="preloader"><div class="loader-diamond"></div></div>
+    <div id="magic-cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <div class="main-content">
+      <nav>
+        <ul>
+          <li>
+            <strong
+              style="
+                color: var(--primary);
+                font-size: 1.6rem;
+                letter-spacing: 2px;
+              "
+              >💎 LUXWATCH</strong
+            >
+          </li>
+        </ul>
+        <ul>
+          <li><a href="/category/House">Itens para Casa</a></li>
+          <li><a href="/category/Electronics">Eletrônicos</a></li>
+          <li><a href="/category/Suplements">Suplementos</a></li>
+
+          {{if .IsLogged}}
+          <li
+            style="
+              color: var(--accent);
+              font-weight: bold;
+              font-family: monospace;
+            "
+          >
+          <li>
+            <a href="/saves" class="btn-buy" style="padding: 8px 15px"
+              >Watchlist</a
+            >
+          </li>
+            {{.Username}}
+          </li>
+          <li>
+            <a href="/logout" style="color: #ff4d4d; font-size: 0.7rem">Sair</a>
+          </li>
+          {{else}}
+          <li>
+            <a
+              href="/auth"
+              style="
+                border: 1px solid var(--primary);
+                padding: 5px 15px;
+                border-radius: 5px;
+              "
+              >Acessar Terminal</a
+            >
+          </li>
+          {{end}}
+        </ul>
+      </nav>
+
+      <header class="hero-section">
+        <h1 class="glow-text">AI Link Hunter</h1>
+        <p
+          class="hero-subtitle"
+          style="color: var(--accent); letter-spacing: 5px"
+        >
+          {{.Season}}
+        </p>
+        <div class="tracking-badges">
+          {{range .Suggestions}}
+          <span class="badge" style="margin: 0 5px">{{.}}</span> {{end}}
+        </div>
+      </header>
+
+      <main class="glass-panel reveal">
+        <div class="form-header" style="margin-bottom: 30px">
+          <h3 style="color: var(--primary)">Manual Tracker</h3>
+          <p style="color: var(--text-muted)">
+            Protocolo de análise de links ativado...
+          </p>
+        </div>
+
+        <form hx-post="/scrape" hx-target="#result" class="modern-form">
+          <div class="input-group">
+            <input
+              type="url"
+              name="url"
+              placeholder="Insira o link do Mercado Livre..."
+              required
+            />
+            <button type="submit">ANALISAR</button>
+          </div>
+        </form>
+
+        <div id="result" class="animate-result"></div>
+      </main>
+    </div>
+
+    <script>
+      // Ativador de animação
+      window.addEventListener("load", () => {
+        document.querySelector(".reveal").classList.add("active");
+        const loader = document.getElementById("preloader");
+        setTimeout(() => {
+          loader.style.opacity = "0";
+          setTimeout(() => (loader.style.display = "none"), 800);
+        }, 1000);
+      });
+
+      const cursor = document.getElementById("magic-cursor");
+      const follower = document.querySelector(".cursor-follower");
+
+      document.addEventListener("mousemove", (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+
+        // Cursor principal
+        cursor.style.transform = `translate(${x - 10}px, ${y - 10}px)`;
+
+        // Seguidor com delay
+        setTimeout(() => {
+          follower.style.transform = `translate(${x - 20}px, ${y - 20}px)`;
+        }, 50);
+      });
+
+      // Efeito de expansão em elementos clicáveis
+      const clickables = document.querySelectorAll("a, button, .deal-card");
+      clickables.forEach((item) => {
+        item.addEventListener("mouseenter", () => {
+          cursor.style.transform = `scale(3)`;
+          cursor.style.background = "var(--accent)";
+          follower.style.borderColor = "var(--accent)";
+        });
+        item.addEventListener("mouseleave", () => {
+          cursor.style.transform = `scale(1)`;
+          cursor.style.background = "var(--primary)";
+          follower.style.borderColor = "var(--primary)";
+        });
+      });
+    </script>
+  </body>
+</html>

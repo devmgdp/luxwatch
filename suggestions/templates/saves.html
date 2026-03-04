@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watchlist Ativa - LuxWatch</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/media_query.css">
+    <style>
+        .saves-container {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .watchlist-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 15px;
+            margin-top: 30px;
+        }
+        .watchlist-table tr {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .watchlist-table tr:hover {
+            background: rgba(0, 168, 255, 0.08);
+            transform: scale(1.01);
+        }
+        .watchlist-table td, .watchlist-table th {
+            padding: 20px;
+            border: 1px solid var(--glass-border);
+            color: #fff;
+        }
+        .watchlist-table th {
+            background: rgba(0, 168, 255, 0.1);
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: var(--primary);
+        }
+        .status-badge {
+            background: #2ecc7133;
+            color: #2ecc71;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            border: 1px solid #2ecc71;
+        }
+        .price-tag {
+            color: var(--primary);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="magic-cursor"></div>
+    <div class="main-content">
+        <nav>
+            <ul><li><strong style="color: var(--primary); font-size: 1.4rem">💎 LuxWatch</strong></li></ul>
+            <ul><li><a href="/">Voltar ao Terminal</a></li></ul>
+        </nav>
+
+        <div class="saves-container">
+            <header style="margin-bottom: 50px;">
+                <h2 class="reveal active">Protocolo de Vigilância</h2>
+                <p style="color: var(--text-muted)">Abaixo estão os links em monitoramento contínuo via rede SMTP.</p>
+            </header>
+
+            <table class="watchlist-table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Destinatário</th>
+                        <th>Preço de Alvo</th>
+                        <th>Link do Produto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .Items}}
+                    <tr class="reveal active">
+                        <td><span class="status-badge">MONITORANDO</span></td>
+                        <td><span style="color: var(--primary); font-family: monospace;">@{{.Username}}</span></td>
+                        <td class="price-tag">R$ {{printf "%.2f" .Price}}</td>
+                        <td>
+                            <a href="{{.URL}}" target="_blank" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: underline;">
+                                Acessar Origem ↗
+                            </a>
+                        </td>
+                    </tr>
+                    {{else}}
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-muted);">
+                            Nenhum protocolo de rastreamento ativo no momento.
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Reutilizando o efeito do cursor para manter a consistência
+        const cursor = document.getElementById("magic-cursor");
+        document.addEventListener("mousemove", (e) => {
+            cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+        });
+    </script>
+</body>
+</html>

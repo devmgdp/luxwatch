@@ -1,0 +1,372 @@
+:root {
+    --primary: #00a8ff;
+    --primary-hover: #0097e6;
+    --accent: #9c88ff;
+    --bg-body: #05070a;
+    --card-bg: rgba(15, 23, 42, 0.4);
+    --text-main: #f8fafc;
+    --text-muted: #64748b;
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --scrollbar-color: rgba(106, 104, 104, 0.44);
+    --neon-glow: 0 0 15px rgba(0, 168, 255, 0.5);
+    --transition-speed: 0.4s;
+}
+
+/* --- Base & Background Futurista --- */
+body {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 20px;
+    overflow-x: hidden;
+    /* Linhas de monitor (Index) + Radial Glow (Categorias) */
+    background-image: 
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+        radial-gradient(circle at 50% 50%, rgba(0, 168, 255, 0.05), transparent 80%);
+    background-size: 100% 4px, 100% 100%;
+}
+
+/* --- Preloader Luxo --- */
+#preloader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #000;
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease;
+}
+
+.loader-diamond {
+    width: 50px; height: 50px;
+    background: var(--primary);
+    transform: rotate(45deg);
+    animation: pulse-diamond 1.2s infinite ease-in-out;
+    box-shadow: var(--neon-glow);
+}
+
+@keyframes pulse-diamond {
+    0% { transform: rotate(45deg) scale(0.8); filter: hue-rotate(0deg); }
+    50% { transform: rotate(45deg) scale(1.2); filter: hue-rotate(180deg); }
+    100% { transform: rotate(45deg) scale(0.8); filter: hue-rotate(360deg); }
+}
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-body); }
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-color);
+    border-radius: 10px;
+}
+
+/* --- Menu Superior --- */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 40px;
+}
+
+nav ul { display: flex; align-items: center; list-style: none; gap: 30px; margin: 0; padding: 0; }
+
+nav a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    position: relative;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; left: 0; width: 0; height: 2px;
+    background: var(--primary);
+    transition: 0.3s;
+}
+
+nav a:hover { color: var(--primary); }
+nav a:hover::after { width: 100%; }
+
+/* --- HERO SECTION (Exclusivo Index) --- */
+.hero-section { text-align: center; padding: 100px 0 60px; }
+
+.glow-text {
+    font-size: clamp(3rem, 10vw, 5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #fff, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(0, 168, 255, 0.4));
+    animation: title-float 3s ease-in-out infinite;
+}
+
+@keyframes title-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.glass-panel {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 50px;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+}
+
+/* --- FORMULÁRIO MODERNO (Index) --- */
+.modern-form .input-group {
+    display: flex; gap: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid var(--glass-border);
+    transition: 0.4s;
+}
+
+.modern-form .input-group:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(0, 168, 255, 0.2);
+}
+
+.modern-form input {
+    flex: 1; background: transparent; border: none;
+    color: white; outline: none; padding: 0 15px;
+}
+
+.modern-form button {
+    background: var(--primary); color: white; border: none;
+    padding: 15px 30px; border-radius: 10px; font-weight: 800;
+    cursor: pointer; text-transform: uppercase; transition: 0.3s;
+}
+
+/* --- HEADER DE CATEGORIA EXTRAVAGANTE (Exclusivo Categorias) --- */
+.category-header {
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+}
+
+.category-header h2 {
+    font-size: clamp(3rem, 10vw, 5.5rem);
+    text-transform: uppercase;
+    font-weight: 950;
+    margin: 0;
+    position: relative;
+    color: #fff;
+    letter-spacing: -2px;
+    line-height: 0.9;
+    animation: glitch-main 3s infinite;
+}
+
+.category-header h2::before,
+.category-header h2::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.category-header h2::before {
+    color: #ff00c1;
+    animation: glitch-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+    transform: translateX(-4px);
+}
+
+.category-header h2::after {
+    color: #00fff9;
+    animation: glitch-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+    transform: translateX(4px);
+}
+
+.status-container {
+    display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 25px;
+}
+
+.typing-effect {
+    font-family: 'Courier New', monospace;
+    background: rgba(0, 168, 255, 0.1);
+    color: var(--primary);
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    border-left: 4px solid var(--primary);
+    animation: status-flicker 2s infinite, typing-anim 4s steps(40) infinite;
+    white-space: nowrap; overflow: hidden; max-width: fit-content;
+}
+
+.scan-line {
+    position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+    background: rgba(0, 168, 255, 0.4); box-shadow: 0 0 15px var(--primary);
+    z-index: 10; animation: scan-move 4s linear infinite; pointer-events: none;
+}
+
+/* --- GRID & CARDS --- */
+.deals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+.deal-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 20px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; flex-direction: column; overflow: hidden;
+    z-index: 1;
+}
+
+.deal-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary);
+    background: rgba(15, 23, 42, 0.7);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 168, 255, 0.1);
+}
+
+.img-container {
+    height: 200px; background: #fff; border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; margin-bottom: 20px; transition: transform 0.4s ease;
+}
+
+.deal-card:hover .img-container { transform: scale(0.98); }
+.img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+.product-name-container { overflow: hidden; white-space: nowrap; margin-bottom: 10px; width: 100%; }
+.product-name { font-size: 0.95rem; font-weight: 600; color: var(--text-main); transition: transform 2.5s linear; display: inline-block; }
+.product-name-container:hover .product-name { transform: translateX(calc(-100% + 240px)); }
+
+.price {
+    font-size: 2rem; font-weight: 900; color: var(--primary);
+    margin: 15px 0; letter-spacing: -1px; filter: drop-shadow(0 0 8px rgba(0, 168, 255, 0.3));
+}
+
+.btn-group { display: flex; gap: 10px; margin-top: auto; position: relative; z-index: 10; }
+
+.btn-chart, .btn-buy {
+    flex: 1; padding: 12px; border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    text-align: center;
+    transition: 0.3s;
+}
+.btn-chart { background: rgba(255, 255, 255, 0.1); color: #fff; }
+.btn-buy { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(0, 168, 255, 0.3); }
+.btn-buy:hover { transform: scale(1.05); filter: brightness(1.1); background: transparent; box-shadow: none;}
+
+/* --- CURSOR & REVELAÇÃO --- */
+#magic-cursor {
+    width: 20px;
+    height: 20px;
+    background: var(--primary);
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    mix-blend-mode: difference;
+    box-shadow: 0 0 15px var(--primary);
+    /* Removemos o transform fixo daqui para o JS controlar */
+    transition: width 0.3s, height 0.3s, background 0.3s; 
+}
+
+.cursor-follower {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--primary);
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    /* Suavidade apenas na escala e cor, não no movimento que é via JS */
+    transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+
+.reveal { opacity: 0; transform: translateY(50px) scale(0.9); transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+
+/* --- KEYFRAMES --- */
+@keyframes scan-move { 0% { top: 0%; } 100% { top: 100%; } }
+@keyframes glitch-main { 0%, 100% { transform: skew(0deg); } 2% { transform: skew(10deg); filter: blur(1px); } 5% { transform: skew(-10deg); } }
+@keyframes glitch-color { 0% { transform: translate(0); } 20% { transform: translate(-3px, 3px); } 40% { transform: translate(-3px, -3px); } 60% { transform: translate(3px, 3px); } 80% { transform: translate(3px, -3px); } 100% { transform: translate(0); } }
+@keyframes status-flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } 55% { opacity: 1; } 56% { opacity: 0.4; } 57% { opacity: 1; } }
+@keyframes typing-anim { from { width: 0; } to { width: 100%; } }
+@keyframes loading-bar { 0% { left: -50px; } 100% { left: 150px; } }
+
+/* --- MODAIS --- */
+#modal-chart {
+    background: rgba(10, 15, 25, 0.9); /* Fundo escuro semi-transparente */
+    backdrop-filter: blur(15px); /* Efeito de vidro */
+    border: 1px solid var(--primary); /* Borda brilhante */
+    border-radius: 15px;
+    padding: 0;
+    width: 90%;
+    max-width: 600px;
+    color: white;
+    box-shadow: 0 0 30px rgba(0, 168, 255, 0.3);
+}
+
+#modal-chart::backdrop {
+    background: rgba(0, 0, 0, 0.8); /* Escurece o fundo do site ao abrir */
+}
+
+#modal-chart article {
+    padding: 20px;
+}
+
+/* Header do Modal */
+#modal-chart header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+}
+
+/* Botão de Fechar Estilizado */
+#modal-chart .close-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.3s;
+}
+
+#modal-chart .close-btn:hover {
+    color: #ff4d4d;
+    transform: scale(1.1);
+}
+
+/* Ajuste do Canvas para não sumir */
+.chart-box {
+    width: 100%;
+    height: 300px;
+    position: relative;
+}

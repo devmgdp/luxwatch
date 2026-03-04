@@ -1,0 +1,163 @@
+<article id="scraped-result" class="reveal active modern-scraped-card">
+    <div class="grid">
+        <div class="product-preview">
+            <div class="glow-overlay"></div>
+            <img src="{{.ImageURL}}" alt="Product Image">
+        </div>
+
+        <div class="product-info">
+            <hgroup>
+                <span class="badge">SISTEMA_SCAN_ATIVO</span>
+                <h2 class="neon-text">{{.Name}}</h2>
+            </hgroup>
+
+            <div class="price-container">
+                <span class="label">VALOR ATUALIZADO</span>
+                <div class="price-row">
+                    <span class="currency">R$</span>
+                    <h1 class="amount">{{printf "%.2f" .Price}}</h1>
+                </div>
+            </div>
+
+            <footer class="watchlist-footer">
+                <div class="input-group-neon">
+                    
+                    <button class="btn-save-neon"
+                            hx-post="/save-product"
+                            hx-vals='{"price": "{{.Price}}", "url": "{{.URL}}"}'
+                            hx-target="this"
+                            hx-swap="outerHTML">
+                        <span class="icon">🔔</span> MONITORAR QUEDA
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <style>
+        .modern-scraped-card {
+            background: rgba(15, 18, 25, 0.8) !important;
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border) !important;
+            border-radius: 20px;
+            padding: 30px;
+            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-preview {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .neon-text {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .price-container {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(0, 0, 0, 0.3));
+            border-left: 4px solid #2ecc71;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .amount { color: #2ecc71; font-weight: 800; }
+
+        .input-group-neon {
+            display: flex;
+            gap: 10px;
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .input-group-neon input {
+            background: transparent !important;
+            border: none !important;
+            color: #fff !important;
+            margin-bottom: 0 !important;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+        }
+
+        .btn-save-neon {
+            background: var(--primary) !important;
+            border: none !important;
+            white-space: nowrap;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 168, 255, 0.4);
+        }
+
+        .btn-save-neon:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px var(--primary);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modern-scraped-card .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Desktop */
+        gap: 20px;
+    }
+
+    /* MEDIA QUERY PARA O CARD */
+    @media (max-width: 768px) {
+        .modern-scraped-card {
+            padding: 15px;
+        }
+        
+        .modern-scraped-card .grid {
+            grid-template-columns: 1fr; /* Coluna única no mobile */
+        }
+
+        .product-preview {
+            padding: 10px;
+        }
+
+        .product-preview img {
+            max-height: 180px; /* Diminui a imagem no celular */
+        }
+
+        .neon-text {
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .price-container {
+            margin: 15px 0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .price-row {
+            justify-content: center;
+        }
+
+        .amount {
+            font-size: 1.8rem;
+        }
+
+        .btn-save-neon {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+    </style>
+</article>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LuxWatch - Autenticação de Rede</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <link rel="stylesheet" href="/static/media_query.css">
+
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <style>
+      .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+      .auth-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 40px;
+        width: 100%;
+        max-width: 380px;
+        transition: var(--transition-speed);
+        position: relative;
+        overflow: hidden;
+      }
+      .auth-card:hover {
+        border-color: var(--primary);
+        box-shadow: var(--neon-glow);
+      }
+      .auth-card h2 {
+        margin-top: 0;
+        letter-spacing: 3px;
+        font-size: 1.5rem;
+        text-align: center;
+        color: var(--primary);
+      }
+      .auth-card input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--glass-border);
+        padding: 12px 15px;
+        margin: 10px 0;
+        border-radius: 8px;
+        color: #fff;
+        outline: none;
+        box-sizing: border-box;
+        transition: 0.3s;
+      }
+      .auth-card input:focus {
+        border-color: var(--accent);
+      }
+      .divider {
+        width: 1px;
+        height: 400px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          var(--glass-border),
+          transparent
+        );
+      }
+      @media (max-width: 800px) {
+        .divider {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="preloader"><div class="loader-diamond"></div></div>
+    <div id="magic-cursor"></div>
+
+    <div class="auth-container">
+      <div class="auth-card reveal active">
+        <div class="scan-line"></div>
+        <h2>LOGIN_TERMINAL</h2>
+        <form hx-post="/login" hx-target="#login-response">
+          <input type="text" name="username" placeholder="USUÁRIO" required />
+          <input type="password" name="password" placeholder="SENHA" required />
+          <button
+            type="submit"
+            class="btn-buy"
+            style="width: 100%; margin-top: 20px"
+          >
+            INICIAR SESSÃO
+          </button>
+          <div id="login-response"></div>
+        </form>
+      <p
+        style="
+          text-align: center;
+          margin-top: 20px;
+          font-size: 0.8rem;
+          color: #888;
+        "
+      >
+        NOVO POR AQUI?
+        <a href="/signup" style="color: var(--primary); text-decoration: none"
+          >CRIE_SUA_CONTA</a
+        >
+      </p>
+      </div>
+
+    </div>
+
+    <script>
+      // Scripts do preloader e cursor para manter o padrão do seu site
+      window.addEventListener("load", () => {
+        const loader = document.getElementById("preloader");
+        setTimeout(() => {
+          loader.style.opacity = "0";
+          setTimeout(() => (loader.style.display = "none"), 600);
+        }, 800);
+      });
+
+      const cursor = document.getElementById("magic-cursor");
+      document.addEventListener("mousemove", (e) => {
+        cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+      });
+
+      document.body.addEventListener("htmx:afterOnLoad", function (evt) {
+        if (evt.detail.target.id === "login-error") {
+          setTimeout(() => {
+            evt.detail.target.innerHTML = "";
+          }, 5000); // Some após 5 segundos
+        }
+      });
+    </script>
+  </body>
+</html>
