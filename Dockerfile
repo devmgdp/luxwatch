@@ -1,46 +1,36 @@
-# Estágio de Compilação
+# --- ESTÁGIO DE COMPILAÇÃO ---
 FROM golang:1.22-alpine AS builder
-
-# Instalar dependências necessárias para compilar pacotes CGO
 RUN apk add --no-cache gcc musl-dev
-
 WORKDIR /app
 
-# Isso acelera o build pois o Docker faz cache das bibliotecas
+# Copia dependências primeiro (cache)
 COPY go.mod go.sum ./
 RUN go mod download
 
+# Copia o restante do código
 COPY . .
 
-# Compila o binário
-RUN go build -o main .
+# CORREÇÃO DO CAMINHO: Aponta para onde o main.go realmente está
+RUN go build -o main ./cmd/server/main.go
 
-# Estágio Final
+# --- ESTÁGIO FINAL ---
 FROM alpine:latest
-
-# Instalar Node.js e dependências para o Playwright funcionar no Linux
-RUN apk add --no-cache \
-    nodejs \
-    npm \
-    chromium \
-    nss \
-    freetype \
-    harfbuzz \
-    ca-certificates \
-    ttf-freefont
+RUN apk add --no-cache nodejs npm chromium nss freetype harfbuzz ca-certificates ttf-freefont
 
 WORKDIR /app
 
-# Copia o binário e as pastas necessárias do estágio builder
+# Copia o binário compilado
 COPY --from=builder /app/main .
-COPY --from=builder /app/suggestions/templates ./suggestions/templates
-COPY --from=builder /app/static ./static
-COPY --from=builder /app/migrations/scraper ./migrations/scraper
 
-# Instalar as dependências do Node.js dentro do container
+# Copia as pastas de assets e templates
+COPY --from=builder /app/suggestions ./suggestions
+COPY --from=builder /app/static ./static
+COPY --from=builder /app/migrations ./migrations
+
+# CORREÇÃO DO NPM: Copia os arquivos de configuração do Node para a pasta certa
+COPY package*.json ./migrations/scraper/
 RUN cd migrations/scraper && npm install
 
-# Expõe a porta que definimos no main.go
 EXPOSE 8080
 
 CMD ["./main"]
