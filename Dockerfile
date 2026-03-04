@@ -1,16 +1,18 @@
 # --- ESTÁGIO DE COMPILAÇÃO ---
-# Usamos a imagem oficial (Debian) para garantir suporte a versões novas do Go
 FROM golang:1.24 AS builder
 
-# No Debian, usamos apt-get em vez de apk
+# ESSA LINHA É A CHAVE: Força o Go a ignorar a discrepância de versão
+ENV GOTOOLCHAIN=go1.24.0
+
 RUN apt-get update && apt-get install -y gcc libc6-dev
 
 WORKDIR /app
 
-# Copia tudo para resolver o problema da sua versão 1.25 local
+# Copia tudo de uma vez
 COPY . .
 
-# Garante que as dependências estejam certas antes de buildar
+# Remove a trava de versão e compila
+RUN go mod edit -go=1.24
 RUN go mod tidy
 RUN go build -o main ./cmd/server/main.go
 
