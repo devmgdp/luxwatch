@@ -39,6 +39,7 @@ COPY --from=builder /app/migrations ./migrations
 COPY --from=builder /app/package*.json ./migrations/scraper/
 
 RUN cd migrations/scraper && npm install
+RUN npx playwright install chromium
 
 EXPOSE 8080
 CMD ["./main"]

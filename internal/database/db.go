@@ -13,9 +13,10 @@ var DB *sql.DB
 func InitDB() {
 	var err error
 
-	// Formato: postgres://usuario:senha@localhost:5432/nome_do_banco?sslmode=disable
-	// SUBSTITUA 'suasenha' pela senha real do seu pgAdmin
-	connStr := os.Getenv("DB_URL")
+	connStr := os.Getenv("DATABASE_URL")
+	if connStr == "" {
+		connStr = os.Getenv("DB_URL")
+	}
 
 	DB, err = sql.Open("postgres", connStr)
 	if err != nil {
