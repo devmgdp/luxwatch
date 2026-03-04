@@ -1,26 +1,25 @@
 # --- ESTÁGIO DE COMPILAÇÃO ---
 FROM golang:1.24 AS builder
 
-# ESSA LINHA É A CHAVE: Força o Go a ignorar a discrepância de versão
-ENV GOTOOLCHAIN=go1.24.0
-
 RUN apt-get update && apt-get install -y gcc libc6-dev
 
 WORKDIR /app
 
-# Copia tudo de uma vez
+# Copia os arquivos de módulo
+COPY go.mod go.sum ./
+# Agora o download vai funcionar direto!
+RUN go mod download
+
+# Copia o resto do código
 COPY . .
 
-# Remove a trava de versão e compila
-RUN go mod edit -go=1.24
-RUN go mod tidy
+# Compila
 RUN go build -o main ./cmd/server/main.go
 
 # --- ESTÁGIO FINAL ---
-# Usamos Debian Slim para manter o container leve e compatível
 FROM debian:bookworm-slim
 
-# Instala Node.js e dependências do Chromium para o scraper
+# Instala Node e Chromium para o scraper
 RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
@@ -28,22 +27,18 @@ RUN apt-get update && apt-get install -y \
     npm \
     chromium \
     ca-certificates \
-    fonts-liberation \
     --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Traz o binário e as pastas do estágio builder
 COPY --from=builder /app/main .
 COPY --from=builder /app/suggestions ./suggestions
 COPY --from=builder /app/static ./static
 COPY --from=builder /app/migrations ./migrations
 COPY --from=builder /app/package*.json ./migrations/scraper/
 
-# Instala as dependências do scraper (Puppeteer/Playwright)
 RUN cd migrations/scraper && npm install
 
 EXPOSE 8080
-
 CMD ["./main"]
